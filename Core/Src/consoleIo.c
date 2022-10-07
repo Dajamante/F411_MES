@@ -42,12 +42,15 @@ eConsoleError ConsoleIoReceive(uint8_t *buffer, const uint32_t bufferLength, uin
 	char ch;
 	
 	ch = getchar();
-	while ( ( '\n' != ch ) && ( i < bufferLength ) )
+
+	while (('\n'!= ch) && ( i < bufferLength ) )
 	{
 		buffer[i] = (uint8_t) ch;
 		i++;
+		printf("%c", ch);
 		ch = getchar();
 	}
+
 	*readLength = i;
 	return CONSOLE_SUCCESS;
 }

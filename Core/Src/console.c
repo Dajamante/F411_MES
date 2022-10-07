@@ -113,7 +113,7 @@ void ConsoleInit(void)
 	uint32_t i;
 
 	ConsoleIoInit();
-	ConsoleIoSendString("Welcome to the Consolinator, your gateway to testing code and hardware.");	
+	ConsoleIoSendString("Welcome to El Consolo, your gateway to testing code and hardware.");
 	ConsoleIoSendString(STR_ENDLINE);
 	ConsoleIoSendString(CONSOLE_PROMPT);
 	mReceivedSoFar = 0u;

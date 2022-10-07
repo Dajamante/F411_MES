@@ -79,6 +79,10 @@ int main(void)
   /* Reset of all peripherals, Initializes the Flash interface and the Systick. */
   HAL_Init();
   ConsoleInit();
+  // Sets the read buf to zero to not wait indefinitely
+
+  setvbuf(stdin, NULL, _IONBF, 0);
+
 
   /* USER CODE BEGIN Init */
 
@@ -94,7 +98,6 @@ int main(void)
   /* Initialize all configured peripherals */
   MX_GPIO_Init();
   /* USER CODE BEGIN 2 */
-  setvbuf(stdin, NULL, _IONBF, 0);
   /* USER CODE END 2 */
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
