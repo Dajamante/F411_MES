@@ -95,12 +95,13 @@ static eCommandResult_T ConsoleCommandParamExampleHexUint16(const char buffer[])
 
 static eCommandResult_T ConsoleCommandStartMic(const char buffer[]){
 	eCommandResult_T result;
-
+	int16_t VALUES[2000];
+	int16_t val = 0;
 	if(COMMAND_SUCCESS == result){
 		HAL_ADC_Init(&hadc1);
 		// ideally not in a for loop but I need at least some values
 		for(int i = 0; i < 1000; i++){
-			int16_t val = 0;
+			HAL_ADC_PollForConversion(&hadc1, 10);
 			val = HAL_ADC_GetValue(&hadc1);
 			ConsoleIoSendString("ADC is: ");
 			ConsoleSendParamInt16(val);
@@ -112,6 +113,8 @@ static eCommandResult_T ConsoleCommandStartMic(const char buffer[]){
 
 static eCommandResult_T ConsoleCommandDumpMic(const char buffer[]){
 	HAL_ADC_Stop(&hadc1);
+
+	return COMMAND_SUCCESS;
 }
 
 static eCommandResult_T ConsoleCommandVer(const char buffer[])

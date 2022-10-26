@@ -36,7 +36,7 @@ int _write(int file, char *outgoing, int len){
 
 eConsoleError ConsoleIoInit(void)
 {
-	//MX_USART2_UART_Init();
+	MX_USART2_UART_Init();
 	return CONSOLE_SUCCESS;
 }
 eConsoleError ConsoleIoReceive(uint8_t *buffer, const uint32_t bufferLength, uint32_t *readLength)
