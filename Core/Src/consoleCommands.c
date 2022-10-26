@@ -11,14 +11,17 @@
 #include "console.h"
 #include "consoleIo.h"
 #include "version.h"
+#include "adc.h"
 
 #define IGNORE_UNUSED_VARIABLE(x)     if ( &x == &x ) {}
 
 static eCommandResult_T ConsoleCommandComment(const char buffer[]);
-static eCommandResult_T ConsoleCommandVer(const char buffer[]);
 static eCommandResult_T ConsoleCommandHelp(const char buffer[]);
+static eCommandResult_T ConsoleCommandVer(const char buffer[]);
 static eCommandResult_T ConsoleCommandParamExampleInt16(const char buffer[]);
 static eCommandResult_T ConsoleCommandParamExampleHexUint16(const char buffer[]);
+static eCommandResult_T ConsoleCommandStartMic(const char buffer[]);
+static eCommandResult_T ConsoleCommandDumpMic(const char buffer[]);
 
 static const sConsoleCommandTable_T mConsoleCommandTable[] =
 {
@@ -27,7 +30,8 @@ static const sConsoleCommandTable_T mConsoleCommandTable[] =
     {"ver", &ConsoleCommandVer, HELP("Get the version string")},
     {"int", &ConsoleCommandParamExampleInt16, HELP("How to get a signed int16 from params list: int -321")},
     {"u16h", &ConsoleCommandParamExampleHexUint16, HELP("How to get a hex u16 from the params list: u16h aB12")},
-
+	{"start-mic", &ConsoleCommandStartMic, HELP("Starting the ADC mic")},
+	{"dump-mic", &ConsoleCommandDumpMic, HELP("Stopping the ADC mic")},
 	CONSOLE_COMMAND_TABLE_END // must be LAST
 };
 
@@ -87,6 +91,27 @@ static eCommandResult_T ConsoleCommandParamExampleHexUint16(const char buffer[])
 		ConsoleIoSendString(STR_ENDLINE);
 	}
 	return result;
+}
+
+static eCommandResult_T ConsoleCommandStartMic(const char buffer[]){
+	eCommandResult_T result;
+
+	if(COMMAND_SUCCESS == result){
+		HAL_ADC_Init(&hadc1);
+		// ideally not in a for loop but I need at least some values
+		for(int i = 0; i < 1000; i++){
+			int16_t val = 0;
+			val = HAL_ADC_GetValue(&hadc1);
+			ConsoleIoSendString("ADC is: ");
+			ConsoleSendParamInt16(val);
+			ConsoleIoSendString(STR_ENDLINE);
+		}
+	}
+	return result;
+}
+
+static eCommandResult_T ConsoleCommandDumpMic(const char buffer[]){
+	HAL_ADC_Stop(&hadc1);
 }
 
 static eCommandResult_T ConsoleCommandVer(const char buffer[])
