@@ -13,6 +13,7 @@
 #include "version.h"
 #include "adc.h"
 
+
 #define IGNORE_UNUSED_VARIABLE(x)     if ( &x == &x ) {}
 
 static eCommandResult_T ConsoleCommandComment(const char buffer[]);
@@ -30,7 +31,7 @@ static const sConsoleCommandTable_T mConsoleCommandTable[] =
     {"ver", &ConsoleCommandVer, HELP("Get the version string")},
     {"int", &ConsoleCommandParamExampleInt16, HELP("How to get a signed int16 from params list: int -321")},
     {"u16h", &ConsoleCommandParamExampleHexUint16, HELP("How to get a hex u16 from the params list: u16h aB12")},
-	{"start-mic", &ConsoleCommandStartMic, HELP("Starting the ADC mic")},
+	{"adc", &ConsoleCommandStartMic, HELP("Starting the ADC mic")},
 	{"dump-mic", &ConsoleCommandDumpMic, HELP("Stopping the ADC mic")},
 	CONSOLE_COMMAND_TABLE_END // must be LAST
 };
@@ -95,27 +96,39 @@ static eCommandResult_T ConsoleCommandParamExampleHexUint16(const char buffer[])
 
 static eCommandResult_T ConsoleCommandStartMic(const char buffer[]){
 	eCommandResult_T result;
-	int16_t VALUES[2000];
+    IGNORE_UNUSED_VARIABLE(buffer);
 	int16_t val = 0;
 	if(COMMAND_SUCCESS == result){
 		HAL_ADC_Init(&hadc1);
 		// ideally not in a for loop but I need at least some values
-		for(int i = 0; i < 1000; i++){
+		// Use a timer for ADC conversion start
+		// when an ADC conversion is done,
+		// save value to an array, dump the whole array at once
+		// this is too slow
+		// record sound and plot
+		// double the little e 363
+		for(int i = 0; i < 5000; i++){
+			HAL_ADC_Start(&hadc1);
 			HAL_ADC_PollForConversion(&hadc1, 10);
 			val = HAL_ADC_GetValue(&hadc1);
-			ConsoleIoSendString("ADC is: ");
+			//ConsoleIoSendString("ADC is: ");
 			ConsoleSendParamInt16(val);
 			ConsoleIoSendString(STR_ENDLINE);
 		}
 	}
+	HAL_ADC_Stop(&hadc1);
+
 	return result;
 }
 
 static eCommandResult_T ConsoleCommandDumpMic(const char buffer[]){
+    IGNORE_UNUSED_VARIABLE(buffer);
+
 	HAL_ADC_Stop(&hadc1);
 
 	return COMMAND_SUCCESS;
 }
+
 
 static eCommandResult_T ConsoleCommandVer(const char buffer[])
 {
