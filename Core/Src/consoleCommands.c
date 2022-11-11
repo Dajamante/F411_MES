@@ -117,9 +117,10 @@ void HAL_ADC_ConvCpltCallback(ADC_HandleTypeDef* hadc){
 	for(int i = 0; i < ADCBUFLEN; i++){
 			//ConsoleIoSendString("ADC is: ");
 			ConsoleSendParamInt16(adcBuf[i]);
-			ConsoleIoSendString(STR_ENDLINE);
+			ConsoleIoSendString(" ");
 		}
-	HAL_ADC_Start_DMA(&hadc1, (uint32_t *) adcBuf, ADCBUFLEN);
+	HAL_ADC_Stop_DMA(&hadc1);
+	HAL_TIM_Base_Stop(&htim3);
 
 }
 static eCommandResult_T ConsoleCommandDumpMic(const char buffer[]){

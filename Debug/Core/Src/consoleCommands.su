@@ -1,0 +1,9 @@
+../Core/Src/consoleCommands.c:43:25:ConsoleCommandComment	16	static
+../Core/Src/consoleCommands.c:50:25:ConsoleCommandHelp	32	static
+../Core/Src/consoleCommands.c:71:25:ConsoleCommandParamExampleInt16	24	static
+../Core/Src/consoleCommands.c:87:25:ConsoleCommandParamExampleHexUint16	24	static
+../Core/Src/consoleCommands.c:102:25:ConsoleCommandStartMic	24	static
+../Core/Src/consoleCommands.c:115:6:HAL_ADC_ConvCpltCallback	24	static
+../Core/Src/consoleCommands.c:126:25:ConsoleCommandDumpMic	16	static
+../Core/Src/consoleCommands.c:135:25:ConsoleCommandVer	24	static
+../Core/Src/consoleCommands.c:147:31:ConsoleCommandsGetTable	4	static
