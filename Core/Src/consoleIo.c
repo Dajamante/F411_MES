@@ -62,3 +62,14 @@ eConsoleError ConsoleIoSendString(const char *buffer)
 	return CONSOLE_SUCCESS;
 }
 
+void HAL_GPIO_EXTI_Callback(uint16_t GPIO_pin){
+	if(GPIO_pin == BUTTON_Pin){
+		//int val = (int) HAL_GPIO_ReadPin(BUTTON_GPIO_Port, BUTTON_Pin);
+		//printf("Val %d\n", val);
+		if(HAL_GPIO_ReadPin(BUTTON_GPIO_Port, BUTTON_Pin) == 1){
+			HAL_GPIO_TogglePin(GREEN_GPIO_Port, GREEN_Pin);
+		}
+	}
+}
+
+

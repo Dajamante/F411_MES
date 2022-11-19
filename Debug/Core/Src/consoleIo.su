@@ -3,3 +3,4 @@
 ../Core/Src/consoleIo.c:37:15:ConsoleIoInit	8	static
 ../Core/Src/consoleIo.c:42:15:ConsoleIoReceive	32	static
 ../Core/Src/consoleIo.c:59:15:ConsoleIoSendString	16	static
+../Core/Src/consoleIo.c:65:6:HAL_GPIO_EXTI_Callback	16	static
