@@ -11,14 +11,22 @@
 #include "console.h"
 #include "consoleIo.h"
 #include "version.h"
+#include "adc.h"
+#include "tim.h"
+
 
 #define IGNORE_UNUSED_VARIABLE(x)     if ( &x == &x ) {}
 
 static eCommandResult_T ConsoleCommandComment(const char buffer[]);
-static eCommandResult_T ConsoleCommandVer(const char buffer[]);
 static eCommandResult_T ConsoleCommandHelp(const char buffer[]);
+static eCommandResult_T ConsoleCommandVer(const char buffer[]);
 static eCommandResult_T ConsoleCommandParamExampleInt16(const char buffer[]);
 static eCommandResult_T ConsoleCommandParamExampleHexUint16(const char buffer[]);
+static eCommandResult_T ConsoleCommandStartMic(const char buffer[]);
+static eCommandResult_T ConsoleCommandDumpMic(const char buffer[]);
+
+#define ADCBUFLEN 1000
+uint16_t adcBuf[ADCBUFLEN];
 
 static const sConsoleCommandTable_T mConsoleCommandTable[] =
 {
@@ -27,7 +35,8 @@ static const sConsoleCommandTable_T mConsoleCommandTable[] =
     {"ver", &ConsoleCommandVer, HELP("Get the version string")},
     {"int", &ConsoleCommandParamExampleInt16, HELP("How to get a signed int16 from params list: int -321")},
     {"u16h", &ConsoleCommandParamExampleHexUint16, HELP("How to get a hex u16 from the params list: u16h aB12")},
-
+	{"adc", &ConsoleCommandStartMic, HELP("Starting the ADC mic")},
+	{"sadc", &ConsoleCommandDumpMic, HELP("Stopping the ADC mic")},
 	CONSOLE_COMMAND_TABLE_END // must be LAST
 };
 
@@ -88,6 +97,40 @@ static eCommandResult_T ConsoleCommandParamExampleHexUint16(const char buffer[])
 	}
 	return result;
 }
+
+
+static eCommandResult_T ConsoleCommandStartMic(const char buffer[]){
+	eCommandResult_T result;
+    IGNORE_UNUSED_VARIABLE(buffer);
+	if(COMMAND_SUCCESS == result){
+
+		HAL_TIM_Base_Start(&htim3);
+		HAL_ADC_Start_DMA(&hadc1, (uint32_t *) adcBuf, ADCBUFLEN);
+
+	}
+
+	return result;
+}
+
+void HAL_ADC_ConvCpltCallback(ADC_HandleTypeDef* hadc){
+
+	for(int i = 0; i < ADCBUFLEN; i++){
+			//ConsoleIoSendString("ADC is: ");
+			ConsoleSendParamInt16(adcBuf[i]);
+			ConsoleIoSendString(" ");
+		}
+	HAL_ADC_Stop_DMA(&hadc1);
+	HAL_TIM_Base_Stop(&htim3);
+
+}
+static eCommandResult_T ConsoleCommandDumpMic(const char buffer[]){
+    IGNORE_UNUSED_VARIABLE(buffer);
+
+	HAL_ADC_Stop_DMA(&hadc1);
+
+	return COMMAND_SUCCESS;
+}
+
 
 static eCommandResult_T ConsoleCommandVer(const char buffer[])
 {
