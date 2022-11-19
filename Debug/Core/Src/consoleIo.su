@@ -1,7 +1,7 @@
-../Core/Src/consoleIo.c:13:5:_read	32	static
-../Core/Src/consoleIo.c:32:5:_write	24	static
-../Core/Src/consoleIo.c:37:15:ConsoleIoInit	8	static
-../Core/Src/consoleIo.c:42:15:ConsoleIoReceive	32	static
-../Core/Src/consoleIo.c:59:15:ConsoleIoSendString	16	static
-../Core/Src/consoleIo.c:65:15:print_counter	8	static
-../Core/Src/consoleIo.c:70:6:HAL_GPIO_EXTI_Callback	16	static
+../Core/Src/consoleIo.c:14:5:_read	32	static
+../Core/Src/consoleIo.c:33:5:_write	24	static
+../Core/Src/consoleIo.c:38:15:ConsoleIoInit	8	static
+../Core/Src/consoleIo.c:43:15:ConsoleIoReceive	32	static
+../Core/Src/consoleIo.c:60:15:ConsoleIoSendString	16	static
+../Core/Src/consoleIo.c:66:15:print_counter	16	static
+../Core/Src/consoleIo.c:74:6:HAL_GPIO_EXTI_Callback	16	static

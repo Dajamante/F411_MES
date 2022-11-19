@@ -10,6 +10,7 @@
 
 // Retargetting write and read:
 
+uint32_t elapsed_time = 0;
 int _read(int file, char *result, size_t len){
 	HAL_StatusTypeDef status;
 
@@ -63,7 +64,10 @@ eConsoleError ConsoleIoSendString(const char *buffer)
 }
 
 eConsoleError print_counter(){
-	printf("Hello");
+	uint32_t current_ticks = HAL_GetTick();
+	elapsed_time = (current_ticks - elapsed_time)/1000;
+	printf("%ld\n", elapsed_time);
+	elapsed_time = current_ticks;
 	return CONSOLE_SUCCESS;
 
 }
